@@ -1,64 +1,138 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace SchoolManagement.Data
 {
     public static class DbInitializer
     {
-        public static async Task InitializeAsync(IServiceProvider serviceProvider)
+        public static async Task InitializeAsync(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
+            // Ensure database is created/migrated
+            context.Database.EnsureCreated();
 
-            // Ensure DB created
-            await context.Database.EnsureCreatedAsync();
-
-            // Create roles
-            string[] roles = new[] { "Admin", "Teacher", "Student" };
-            foreach (var r in roles)
+            // 1. Check if any data exists to avoid re-seeding
+            if (context.Students.Any() || context.Teachers.Any())
             {
-                if (!await roleManager.RoleExistsAsync(r))
-                    await roleManager.CreateAsync(new IdentityRole(r));
+                return; // DB has been seeded
             }
 
-            // Create admin user
-            var adminEmail = "admin@school.local";
-            if (await userManager.FindByEmailAsync(adminEmail) == null)
+            // --- Roles and Users (Standard Identity Seeding, placeholder) ---
+            string[] roleNames = { "Admin", "Teacher", "Student" };
+            foreach (var roleName in roleNames)
             {
-                var adminUser = new ApplicationUser { UserName = adminEmail, Email = adminEmail, FullName = "Administrator" };
-                var result = await userManager.CreateAsync(adminUser, "Admin@123");
-                if (result.Succeeded)
+                if (!await roleManager.RoleExistsAsync(roleName))
                 {
-                    await userManager.AddToRoleAsync(adminUser, "Admin");
+                    await roleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }
 
-            // Seed few classrooms, students, teachers
-            if (!context.ClassRooms.Any())
+            // --- Core Entity Seeding ---
+
+            // 2. ClassRooms must be created first
+            var classrooms = new ClassRoom[]
             {
-                var c1 = new ClassRoom { Name = "Grade 10 - A", Section = "A" };
-                var c2 = new ClassRoom { Name = "Grade 9 - A", Section = "A" };
-                context.ClassRooms.AddRange(c1, c2);
-                await context.SaveChangesAsync();
+                new ClassRoom { Name = "Grade 9", Section = "A" },
+                new ClassRoom { Name = "Grade 10", Section = "B" },
+                new ClassRoom { Name = "Grade 11", Section = "Science" }
+            };
+            context.ClassRooms.AddRange(classrooms);
+            await context.SaveChangesAsync();
 
-                var t1 = new Teacher { FullName = "Mrs. Sharma", EmployeeNumber = "T1001" };
-                var t2 = new Teacher { FullName = "Mr. Patel", EmployeeNumber = "T1002" };
-                context.Teachers.AddRange(t1, t2);
-                await context.SaveChangesAsync();
+            // 3. Teachers must be created second
+            var teachers = new Teacher[]
+            {
+                new Teacher { FullName = "Mr. Alan Turing", EmployeeNumber = "T101" },
+                new Teacher { FullName = "Ms. Grace Hopper", EmployeeNumber = "T102" },
+                new Teacher { FullName = "Prof. Marie Curie", EmployeeNumber = "T103" }
+            };
+            context.Teachers.AddRange(teachers);
+            await context.SaveChangesAsync();
 
-                var s1 = new Student { FullName = "Ravi Kumar", DateOfBirth = new DateTime(2009, 5, 1), RollNumber = "10A001", ClassRoomId = c1.Id };
-                var s2 = new Student { FullName = "Priya Singh", DateOfBirth = new DateTime(2009, 8, 15), RollNumber = "10A002", ClassRoomId = c1.Id };
-                context.Students.AddRange(s1, s2);
-                await context.SaveChangesAsync();
 
-                // Subjects
-                var sub1 = new Subject { Name = "Mathematics", TeacherId = t1.Id };
-                var sub2 = new Subject { Name = "Science", TeacherId = t2.Id };
-                context.Subjects.AddRange(sub1, sub2);
-                await context.SaveChangesAsync();
-            }
+            // 4. Students - FIX CS9035: Must set the ClassRoom navigation property
+            var students = new Student[]
+            {
+                // **FIXED LINE 51 (APPROX): SETTING BOTH ClassRoomId AND ClassRoom**
+                new Student
+                {
+                    FullName = "Alice Johnson",
+                    DateOfBirth = new DateTime(2008, 9, 15),
+                    RollNumber = "S9A001",
+                    ClassRoomId = classrooms[0].Id,
+                    ClassRoom = classrooms[0]
+                },
+                // **FIXED LINE 52 (APPROX): SETTING BOTH ClassRoomId AND ClassRoom**
+                new Student
+                {
+                    FullName = "Bob Williams",
+                    DateOfBirth = new DateTime(2007, 5, 20),
+                    RollNumber = "S10B002",
+                    ClassRoomId = classrooms[1].Id,
+                    ClassRoom = classrooms[1]
+                },
+                new Student
+                {
+                    FullName = "Charlie Brown",
+                    DateOfBirth = new DateTime(2006, 11, 1),
+                    RollNumber = "S11C003",
+                    ClassRoomId = classrooms[2].Id,
+                    ClassRoom = classrooms[2]
+                }
+            };
+            context.Students.AddRange(students);
+            await context.SaveChangesAsync();
+
+
+            // 5. Subjects - FIX CS9035: Must set the Teacher navigation property
+            var subjects = new Subject[]
+            {
+                // **FIXED LINE 57 (APPROX): SETTING BOTH TeacherId AND Teacher**
+                new Subject
+                {
+                    Name = "Calculus I",
+                    TeacherId = teachers[0].Id,
+                    Teacher = teachers[0]
+                },
+                // **FIXED LINE 58 (APPROX): SETTING BOTH TeacherId AND Teacher**
+                new Subject
+                {
+                    Name = "Chemistry",
+                    TeacherId = teachers[2].Id,
+                    Teacher = teachers[2]
+                },
+                new Subject
+                {
+                    Name = "History",
+                    TeacherId = teachers[1].Id,
+                    Teacher = teachers[1]
+                }
+            };
+            context.Subjects.AddRange(subjects);
+            await context.SaveChangesAsync();
+
+            // 6. Enrollments
+            var enrollments = new Enrollment[]
+            {
+                // Alice enrolled in Calculus
+                new Enrollment { Student = students[0], Subject = subjects[0] }, 
+                // Bob enrolled in Chemistry
+                new Enrollment { Student = students[1], Subject = subjects[1] }
+            };
+            context.Enrollments.AddRange(enrollments);
+            await context.SaveChangesAsync();
+
+            // 7. Attendance (Example Record)
+            var attendanceRecords = new Attendance[]
+            {
+                new Attendance { Student = students[0], Date = DateTime.Today.AddDays(-1), IsPresent = true, ClassRoom = classrooms[0] },
+                new Attendance { Student = students[1], Date = DateTime.Today.AddDays(-1), IsPresent = false, ClassRoom = classrooms[1] }
+            };
+            context.Attendances.AddRange(attendanceRecords);
+            await context.SaveChangesAsync();
+
+            // 8. Final save
+            await context.SaveChangesAsync();
         }
     }
 }

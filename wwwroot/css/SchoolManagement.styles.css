@@ -1,0 +1,108 @@
+/* SchoolManagement.styles.css
+   Aggregated scoped styles for SchoolManagement Razor Pages
+   Manually created since auto-generated bundle is missing
+*/
+
+/* ===== LAYOUT STYLES ===== */
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+    a:hover {
+        text-decoration: underline;
+        color: #084298;
+    }
+
+.btn-primary {
+    color: #fff;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+    .btn-primary:hover {
+        background-color: #0b5ed7;
+        border-color: #0a58ca;
+    }
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.border-top {
+    border-top: 1px solid #dee2e6;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .1);
+}
+
+/* ===== LAYOUT FOOTER ===== */
+.footer {
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+/* ===== BODY AND CONTAINER ===== */
+html {
+    font-size: 14px;
+    position: relative;
+    min-height: 100%;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+body {
+    margin-bottom: 60px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    background-color: #ffffff;
+}
+
+/* Ensure spacing below fixed navbar */
+.container {
+    margin-top: 80px;
+}
+
+/* ===== FORM & INPUT FOCUS ===== */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+/* ===== TABLE STYLING ===== */
+table.table {
+    border-collapse: collapse;
+}
+
+    table.table th {
+        background-color: #f1f3f5;
+    }
+
+    table.table tr:hover {
+        background-color: #f8f9fa;
+    }
