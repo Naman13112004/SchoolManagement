@@ -43,9 +43,25 @@ app.MapRazorPages(); // for Identity pages
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var db = services.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
-    await DbInitializer.InitializeAsync(services);
+
+    try
+    {
+        // 1. Get all required services
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+        // 2. Apply migrations
+        context.Database.Migrate();
+
+        // 3. Call the initializer with all required parameters
+        await DbInitializer.InitializeAsync(context, userManager, roleManager);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while seeding the database.");
+    }
 }
 
 app.Run();
