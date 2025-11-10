@@ -8,10 +8,13 @@ namespace SchoolManagement.Models
         public int Id { get; set; }
 
         [Required]
-        public string Name { get; set; } // e.g., "Grade 10 - A"
+        public required string Name { get; set; } // e.g., "Grade 10 - A"
 
-        public string Section { get; set; }
+        // Made Section nullable (string?) as it might not be strictly required, or use 'required'
+        // Given your original model had no [Required], I'll make it nullable if not required.
+        public string? Section { get; set; }
 
-        public ICollection<Enrollment> Enrollments { get; set; }
+        // Initialized collection to an empty list to prevent warning
+        public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
     }
 }

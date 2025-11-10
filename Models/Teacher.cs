@@ -8,10 +8,12 @@ namespace SchoolManagement.Models
         public int Id { get; set; }
 
         [Required]
-        public string FullName { get; set; }
+        public required string FullName { get; set; }
 
-        public string EmployeeNumber { get; set; }
+        [Required]
+        public required string EmployeeNumber { get; set; }
 
-        public ICollection<Subject> Subjects { get; set; }
+        // Initialized collection
+        public ICollection<Subject> Subjects { get; set; } = new List<Subject>();
     }
 }

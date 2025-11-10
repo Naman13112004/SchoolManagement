@@ -4,9 +4,11 @@ namespace SchoolManagement.Models
     {
         public int Id { get; set; }
         public int StudentId { get; set; }
-        public Student Student { get; set; }
+        // Added 'required'
+        public required Student Student { get; set; }
 
         public int SubjectId { get; set; }
-        public Subject Subject { get; set; }
+        // Added 'required'
+        public required Subject Subject { get; set; }
     }
 }

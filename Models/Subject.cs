@@ -8,9 +8,9 @@ namespace SchoolManagement.Models
         public int Id { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
         public int TeacherId { get; set; }
-        public Teacher Teacher { get; set; }
+        public Teacher? Teacher { get; set; }
     }
 }

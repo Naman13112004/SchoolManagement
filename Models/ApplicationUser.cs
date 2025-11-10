@@ -4,7 +4,7 @@ namespace SchoolManagement.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        // Additional common fields (optional)
-        public string FullName { get; set; }
+        // Added 'required' modifier for non-nullable property
+        public required string FullName { get; set; }
     }
 }
