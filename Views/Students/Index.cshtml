@@ -1,53 +1,83 @@
-@model IEnumerable<SchoolManagement.Models.Student>
+﻿@model IEnumerable<SchoolManagement.Models.Student>
 
-@{
-    ViewData["Title"] = "Index";
-}
+    @{
+    ViewData["Title"] = "Student Directory";
+    }
 
-<h1>Index</h1>
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h1 class="display-5 text-primary">Student Directory 🧑‍🎓</h1>
+            <p class="lead text-muted">A complete list of all enrolled students.</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <a asp-action="Create" class="btn btn-success btn-lg shadow-sm">
+                <i class="fas fa-plus-circle me-2"></i> Enroll New Student
+            </a>
+        </div>
+    </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOfBirth)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RollNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ClassRoom)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfBirth)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RollNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClassRoom.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Current Enrollment List</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped mb-0">
+                    <thead>
+                        <tr class="table-dark">
+                            <th>
+                                @Html.DisplayNameFor(model => model.FullName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RollNumber)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ClassRoom)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DateOfBirth)
+                            </th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model) {
+                        <tr>
+                            <td>
+                                <i class="fas fa-user me-2 text-info"></i>
+                                **@Html.DisplayFor(modelItem => item.FullName)**
+                            </td>
+                            <td>
+                                <span class="badge bg-primary">@Html.DisplayFor(modelItem => item.RollNumber)</span>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ClassRoom.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateOfBirth)
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info" title="View Details">
+                                        Details
+                                    </a>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-warning" title="Edit Student">
+                                        Edit
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger" title="Delete Student">
+                                        Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            Total Students: **@Model.Count()**
+        </div>
+    </div>
+
+    @* NOTE: You might need to include Font Awesome for the icons (fas fa-...) in your _Layout.cshtml for this to render correctly, if not already done. *@

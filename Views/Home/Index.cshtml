@@ -1,8 +1,136 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="display-4 text-primary">🏫 School Overview Dashboard</h1>
+        <p class="lead text-muted">A quick glance at the current operational status of SchoolManagement.</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-success text-white shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="text-uppercase fw-bold mb-1">Total Students</div>
+                        <div class="h2 mb-0">@ViewBag.TotalStudents</div>
+                    </div>
+                    <span class="fs-1 opacity-50">🎓</span>
+                </div>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" asp-controller="Students" asp-action="Index">View Details</a>
+                <div class="small text-white">→</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-info text-white shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="text-uppercase fw-bold mb-1">Active Teachers</div>
+                        <div class="h2 mb-0">@ViewBag.TotalTeachers</div>
+                    </div>
+                    <span class="fs-1 opacity-50">👨‍🏫</span>
+                </div>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" asp-controller="Teachers" asp-action="Index">View Details</a>
+                <div class="small text-white">→</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-warning text-dark shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="text-uppercase fw-bold mb-1">Total Classrooms</div>
+                        <div class="h2 mb-0">@ViewBag.TotalClassRooms</div>
+                    </div>
+                    <span class="fs-1 opacity-50">📚</span>
+                </div>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-dark stretched-link" asp-controller="ClassRooms" asp-action="Index">View Details</a>
+                <div class="small text-dark">→</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-danger text-white shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="text-uppercase fw-bold mb-1">Today's Attendance</div>
+                        <div class="h2 mb-0">@ViewBag.TodayAttendance</div>
+                    </div>
+                    <span class="fs-1 opacity-50">✅</span>
+                </div>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" asp-controller="Attendances" asp-action="Index">View Full Log</a>
+                <div class="small text-white">→</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-lg-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <p>Quickly navigate to common tasks.</p>
+                <div class="list-group">
+                    <a asp-controller="Students" asp-action="Create" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        Enroll New Student
+                        <span class="text-primary">→</span>
+                    </a>
+                    <a asp-controller="Teachers" asp-action="Create" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        Add New Teacher
+                        <span class="text-primary">→</span>
+                    </a>
+                    <a asp-controller="Attendances" asp-action="Create" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        Mark Today's Attendance
+                        <span class="text-primary">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">System Notices</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Database Backup Status
+                        <span class="badge bg-success rounded-pill">Completed</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Pending Grade Submissions
+                        <span class="badge bg-warning text-dark rounded-pill">14 Classes</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        New Support Tickets
+                        <span class="badge bg-danger rounded-pill">3</span>
+                    </li>
+                </ul>
+                <a href="#" class="btn btn-outline-secondary btn-sm mt-3">View All Logs</a>
+            </div>
+        </div>
+    </div>
 </div>
