@@ -1,4 +1,4 @@
-@model SchoolManagement.Models.Teacher
+﻿@model SchoolManagement.Models.Teacher
 
 @{
     ViewData["Title"] = "Delete";
@@ -11,8 +11,56 @@
     <h4>Teacher</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FullName)
+            @model SchoolManagement.Models.Teacher
+
+            @{
+    ViewData["Title"] = "Delete Teacher";
+            }
+
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-8">
+                    <div class="card shadow-lg border-danger rounded-lg mt-5">
+                        <div class="card-header bg-danger text-white">
+                            <h3 class="text-center my-4">Delete Confirmation 🛑</h3>
+                        </div>
+                        <div class="card-body p-4">
+                            <h3 class="text-danger mb-4">Are you sure you want to permanently delete this teacher's record?</h3>
+                            <p class="lead">This action will remove the teacher and may unassign them from subjects and classes.</p>
+                            <hr />
+
+                            <dl class="row border p-3 bg-light rounded">
+                                <dt class="col-sm-4 text-muted">
+                                    @Html.DisplayNameFor(model => model.FullName)
+                                </dt>
+                                <dd class="col-sm-8 fw-bold text-danger">
+                                    @Html.DisplayFor(model => model.FullName)
+                                </dd>
+
+                                <dt class="col-sm-4 text-muted">
+                                    @Html.DisplayNameFor(model => model.EmployeeNumber)
+                                </dt>
+                                <dd class="col-sm-8">
+                                    @Html.DisplayFor(model => model.EmployeeNumber)
+                                </dd>
+                            </dl>
+
+                            <form asp-action="Delete" class="mt-4">
+                                <input type="hidden" asp-for="Id" />
+                                <div class="d-flex justify-content-start gap-2">
+                                    <button type="submit" class="btn btn-danger btn-lg">
+                                        <i class="fas fa-trash-alt me-2"></i> Confirm Delete
+                                    </button>
+                                    <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                                        <i class="fas fa-times me-2"></i> Cancel
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.FullName)

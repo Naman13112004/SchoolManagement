@@ -1,45 +1,59 @@
-@model SchoolManagement.Models.Student
+﻿@model SchoolManagement.Models.Student
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Enroll New Student";
 }
 
-<h1>Create</h1>
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+        <div class="card shadow-lg border-0 rounded-lg mt-5">
+            <div class="card-header bg-success text-white">
+                <h3 class="text-center my-4">Enroll New Student 📝</h3>
+            </div>
+            <div class="card-body">
+                <h4 class="mb-3">Student Information</h4>
+                <hr />
+                <form asp-action="Create" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
-<h4>Student</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="FullName" class="form-label fw-bold"></label>
+                            <input asp-for="FullName" class="form-control form-control-lg" placeholder="e.g., Jane Doe" />
+                            <span asp-validation-for="FullName" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="DateOfBirth" class="form-label fw-bold"></label>
+                            <input asp-for="DateOfBirth" class="form-control form-control-lg" type="date" />
+                            <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="RollNumber" class="form-label fw-bold"></label>
+                            <input asp-for="RollNumber" class="form-control form-control-lg" placeholder="e.g., 2025001" />
+                            <span asp-validation-for="RollNumber" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="ClassRoomId" class="form-label fw-bold">Assign Class</label>
+                            <select asp-for="ClassRoomId" class="form-select form-select-lg" asp-items="ViewBag.ClassRoomId">
+                                <option value="">-- Select Class --</option>
+                            </select>
+                            <span asp-validation-for="ClassRoomId" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-save me-2"></i> Enroll Student
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" class="form-control" />
-                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            <div class="card-footer text-center">
+                <a asp-action="Index" class="text-success fw-bold">← Back to Student List</a>
             </div>
-            <div class="form-group">
-                <label asp-for="RollNumber" class="control-label"></label>
-                <input asp-for="RollNumber" class="form-control" />
-                <span asp-validation-for="RollNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ClassRoomId" class="control-label"></label>
-                <select asp-for="ClassRoomId" class ="form-control" asp-items="ViewBag.ClassRoomId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
